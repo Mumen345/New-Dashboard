@@ -45,6 +45,7 @@ import Message from "vue-m-message";
 import { useRouter } from "vue-router";
 import ButtonComponent from "@/components/reusables/ButtonComponent.vue";
 import { ref, reactive } from "vue";
+import { useAuthStore } from '@/stores/auth';
 
 const loginForm = ref([
   { title: "Email", value: "email", type: "text" },
@@ -54,6 +55,8 @@ const loginForm = ref([
 const disabled = ref(false);
 
 const router = useRouter();
+const authStore = useAuthStore()
+
 
 const formResponse = reactive({
   email: "",
@@ -80,7 +83,10 @@ const handleSubmit = async () => {
   ).then((response) => {
     Message.success("Login Successful");
     const _token = response.data.access_token;
-    const _id = response.data.id;
+     const _id = response.data.id;
+
+     authStore.login(response.data)
+
     localStorage.setItem("auth-token", _token);
     localStorage.setItem("admin-id", _id);
     disabled.value = false;
@@ -145,7 +151,7 @@ const handleSubmit = async () => {
 a {
   color: #2aaa0b;
   text-decoration: none;
-  font-size: 14px;
+  /* font-size: 14px; */
   font-weight: 500;
 }
 

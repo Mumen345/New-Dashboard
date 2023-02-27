@@ -8,7 +8,7 @@
       <RouteDetailsComponent v-if="currentRoute.showDetails" />
       <ActionComponent v-if="currentRoute.showDetails" />
       <DashboardDetailsComponent v-if="!currentRoute.showDetails" />
-      <div class="route relative mr-8 overflow-x-hidden overflow-y-scroll">
+      <div class="route relative mr-8 min-h-screen">
         <DropdownComponent />
         <RouterView />
       </div>
