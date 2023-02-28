@@ -36,6 +36,7 @@
 import { markRaw, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { routeDetails } from "@/stores/routeDetails.js";
+import { useAuthStore } from '@/stores/auth'
 
 import ButtonComponent from "./ButtonComponent.vue";
 import DashboardIcon from "../icons/DashboardIcon.vue";
@@ -49,6 +50,7 @@ import SidebarCarIcon from "../icons/SidebarCarIcon.vue";
 const router = useRouter();
 const route = useRoute();
 const currentRoute = routeDetails();
+const authStore = useAuthStore();
 
 const sidebars = markRaw([
   { name: "Dashboard", route: "/admin/dashboard", icon: DashboardIcon },
@@ -64,7 +66,7 @@ const sidebars = markRaw([
 ]);
 const logout = () => {
   localStorage.removeItem("auth-token");
-  router.replace("/");
+  authStore.forceLogout();
 };
 
 onMounted(() => {

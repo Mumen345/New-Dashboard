@@ -4,7 +4,7 @@ import { createPersistedState } from 'pinia-plugin-persistedstate';
 import Dropdown from './support/utils';
 
 import App from "./App.vue";
-import router from "./router/router";
+import router from "./router";
 import Message from "vue-m-message";
 
 import "./assets/tailwind.css";

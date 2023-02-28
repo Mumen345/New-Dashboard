@@ -18,7 +18,7 @@
             ? (state.showDropdown = false)
             : (state.showDropdown = true)
         "
-        class="h-8 w-8 border-brand-light text-4xl text-brand-dark focus:border-none focus:outline-none"
+        class="border-brand-light text-4xl text-brand-dark focus:border-none focus:outline-none"
       />
       <p
         v-for="(head, index) in headings"
