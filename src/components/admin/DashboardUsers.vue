@@ -1,26 +1,24 @@
 <template>
-  <div class="container h-[9.8rem] w-full rounded-lg bg-white">
-    <div class="flex items-center justify-start">
-      <div
-        class="rounded-1/2 my-[2.5rem] ml-[5.2rem] mr-[8.21rem] flex h-16 w-16 items-center justify-center rounded-full bg-brand"
-      >
-        <DashboardUserIcon />
+   <div class="card rounded-lg bg-white py-5 px-4">
+      <div class="flex items-center justify-start">
+         <div class="flex h-12 w-12 mr-4 flex-shrink-0 items-center justify-center rounded-full bg-brand">
+            <DashboardUserIcon />
+         </div>
+         <div class="text-xl">
+            <h2 class="text-lg font-medium">Users</h2>
+            <h2 class="text-base font-bold">{{ usersCount }}</h2>
+         </div>
       </div>
-      <div class="text-xl">
-        <h2 class="m-2 mb-4 text-[1.4rem] font-medium">Users</h2>
-        <h2 class="m-2 text-[1.8rem] font-bold">{{ usersCount }}</h2>
-      </div>
-    </div>
-  </div>
+   </div>
 </template>
 
 <script setup>
 import DashboardUserIcon from "../icons/DashboardUserIcon.vue";
 defineProps({
-  usersCount: {
-     type: Number ||String,
-    default: 74387,
-  },
+   usersCount: {
+      type: Number || String,
+      default: 74387,
+   },
 });
 </script>
 

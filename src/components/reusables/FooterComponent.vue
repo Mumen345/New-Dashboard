@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mt-4 flex items-center justify-between  justify-self-end bg-white p-6 text-xl font-normal"
+    class="mt-4 flex items-center justify-between  justify-self-end bg-white p-6 text-base font-normal"
   >
     <div class="flex gap-x-4">
       <h2>Greach</h2>

@@ -1,37 +1,23 @@
 <template>
-  <div class="flex h-full flex-col items-stretch justify-between pt-10">
-    <div class="bar_content">
-      <ul class="flex w-full flex-col items-start justify-start">
-        <li
-          class="h-[7.5rem] w-full px-10 text-[1.5rem]"
-          v-for="(nav, index) in sidebars"
-          :key="index"
-        >
-          <router-link
-            :to="nav.route"
-            class="flex gap-x-4 fill-brand-dark font-normal"
-          >
-            <keep-alive>
-              <component :is="nav.icon" class="fill-[#404040]"> </component>
-            </keep-alive>
-            <p>{{ nav.name }}</p></router-link
-          >
-        </li>
-      </ul>
-    </div>
-    <div
-      class="flex w-full items-center justify-start self-end justify-self-end"
-    >
-      <ButtonComponent
-        text="Log Out"
-        @click="logout"
-        :component="LogoutIcon"
-        customClass="block w-full h-24 rounded-none text-center text-[1.6rem] bg-brand text-white"
-        customStyle=""
-      />
-    </div>
-  </div>
+   <div class="flex h-full flex-col items-stretch justify-between pt-10">
+      <div class="bar_content">
+         <ul class="flex w-full flex-col items-start justify-start">
+            <li class="py-5 w-full px-10 text-base" v-for="(nav, index) in sidebars" :key="index">
+               <router-link :to="nav.route" class="flex gap-x-4 fill-brand-dark font-normal">
+                  <keep-alive>
+                     <component :is="nav.icon" class="fill-[#404040]"> </component>
+                  </keep-alive>
+                  <p>{{ nav.name }}</p>
+               </router-link>
+            </li>
+         </ul>
+      </div>
+      <div class="flex w-full items-center justify-start self-end justify-self-end">
+         <button  @click="logout" class="w-full py-4 text-center text-white text-base bg-brand">Logout</button>
+      </div>
+   </div>
 </template>
+
 <script setup>
 import { markRaw, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
