@@ -10,7 +10,7 @@
         id=""
         v-model="checkAll"
         :checked="checkAll"
-        class="h-8 w-8 border-brand-light text-4xl text-brand-dark focus:border-none focus:outline-none"
+        class="border-brand-light text-4xl text-brand-dark focus:border-none focus:outline-none"
       />
       <p
         v-for="(head, index) in headings"
@@ -39,7 +39,7 @@
           id=""
           v-model="checkAll"
           :checked="checkAll"
-          class="h-8 w-8 text-brand-dark"
+          class="text-brand-dark"
         />
         <p>{{ item[headings[0]] || "" }}</p>
         <p>{{ item[headings[1]] || "" }}</p>

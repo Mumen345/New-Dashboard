@@ -3,7 +3,7 @@
     <div class="login_card">
       <div class="space">
         <h1><span class="text-3xl font-bold">Greach</span></h1>
-        <p class="text-lg">Welcome Back, Please login to your account.</p>
+        <p class="text-base">Welcome Back, Please login to your account.</p>
       </div>
       <form @submit.prevent="handleSubmit" class="form_group">
         <div
@@ -14,7 +14,7 @@
           <input
             v-model="formResponse[input.value]"
             :type="input.type"
-            class="form-control"
+            class="form-control border-none"
             :placeholder="input.title"
           />
           <div

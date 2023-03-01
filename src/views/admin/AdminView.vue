@@ -6,7 +6,7 @@
     <div class="relative flex h-screen w-4/5 flex-col pl-[6.9rem]">
       <NavbarComponent />
       <RouteDetailsComponent v-if="currentRoute.showDetails" />
-      <ActionComponent v-if="currentRoute.showDetails" />
+      <!-- <ActionComponent v-if="currentRoute.showDetails" /> -->
       <DashboardDetailsComponent v-if="!currentRoute.showDetails" />
       <div class="route relative mr-8 min-h-screen">
         <DropdownComponent />

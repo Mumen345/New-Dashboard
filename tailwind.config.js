@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 // eslint-disable-next-line no-undef
 module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
@@ -17,7 +19,7 @@ module.exports = {
     },
   },
   plugins: [
-    require("@tailwindcss/forms"),
-    require("prettier-plugin-tailwindcss"),
+   //  require("@tailwindcss/forms"),
+   //  require("prettier-plugin-tailwindcss"),
   ],
 };
