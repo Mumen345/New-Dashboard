@@ -1,24 +1,32 @@
 <template>
-  <div class="flex w-full">
-    <div class="sticky top-0 h-screen w-1/5 bg-white">
+<div class="flex h-screen bg-gray-200 font-roboto">
+   <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden"></div>
+
+   <div :class="sidebarOpen ? 'translate-x-0 ease-out' : '-translate-x-full ease-in'" class="fixed inset-y-0 left-0 z-30 w-64 overflow-y-auto transition duration-300 transform bg-white lg:translate-x-0 lg:static lg:inset-0">
       <SidebarComponent />
-    </div>
-    <div class="relative flex h-screen w-4/5 flex-col pl-[6.9rem]">
-      <NavbarComponent />
-      <RouteDetailsComponent v-if="currentRoute.showDetails" />
-      <!-- <ActionComponent v-if="currentRoute.showDetails" /> -->
-      <DashboardDetailsComponent v-if="!currentRoute.showDetails" />
-      <div class="route relative mr-8 min-h-screen">
-        <DropdownComponent />
-        <RouterView />
-      </div>
-      <FooterComponent />
-    </div>
-  </div>
+   </div>
+
+   <div class="flex-1 flex flex-col overflow-hidden bg-[#F4F5FA]">
+      <main class="flex-1 overflow-x-hidden overflow-y-auto">
+         <NavbarComponent />
+
+         <div class="container-xl pt-4 pb-5">
+            <RouteDetailsComponent v-if="currentRoute.showDetails" />
+            <ActionComponent v-if="currentRoute.showDetails" />
+            <DashboardDetailsComponent v-if="!currentRoute.showDetails" />
+            <div class="route relative min-h-screen">
+               <DropdownComponent />
+               <RouterView />
+            </div>
+            <FooterComponent />
+         </div>
+      </main>
+   </div>
+</div>
 </template>
 
 <script setup>
-import { onUpdated } from "vue";
+import { onUpdated, ref } from "vue";
 import { routeDetails } from "@/stores/routeDetails.js";
 import { useRoute } from "vue-router";
 
@@ -36,6 +44,8 @@ onUpdated(() => {
   if (route.path.includes("dashboard")) currentRoute.showDetails = false;
   else currentRoute.showDetails = true;
 });
+
+const sidebarOpen = ref(false)
 </script>
 <style lang="scss" scoped>
 .route {

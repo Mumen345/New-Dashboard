@@ -1,7 +1,7 @@
 <template>
-  <div class="flex h-[14rem] items-center justify-between">
+  <div class="flex mb-5 items-center justify-between">
     <div class="ml-[3rem]">
-      <h1 class="m-4 block text-[2.4rem] font-bold text-brand-dark">
+      <h1 class="m-4 block text-2xl font-bold text-brand-dark">
         Welcome Back
       </h1>
     </div>
@@ -15,7 +15,7 @@
         @focus="removeSearchIcon = true"
         :class="removeSearchIcon ? 'placeholder:pl-0' : 'placeholder:pl-12'"
         @mouseout="removeSearchIcon = false"
-        class="container mr-[4.9rem] block h-[4.5rem] w-[48.65rem] rounded-xl border-none text-xl placeholder:text-xl placeholder:capitalize placeholder:text-dark"
+        class="form-control bg-white mr-[4.9rem] block h-[4.5rem] w-[48.65rem] rounded-xl border-none text-xl placeholder:text-xl placeholder:capitalize placeholder:text-dark"
         placeholder=""
       />
       <span
