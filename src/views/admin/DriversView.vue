@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="mb-4">
+      <ActionComponent />
+    </div>
+
     <TableGridComponent
       :headings="headings"
       :list="drivers"
@@ -14,6 +18,7 @@ import { routeDetails } from "@/stores/routeDetails.js";
 import { filterTable } from "@/stores/search-filter";
 import { ref, onMounted } from "vue";
 import TableGridComponent from "@/components/reusables/TableGridComponent.vue";
+import ActionComponent from "@/components/reusables/ActionComponent.vue";
 
 // store
 const currentRoute = routeDetails();
