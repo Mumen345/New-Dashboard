@@ -18,7 +18,7 @@
                </tr>
             </thead>
             <tbody>
-               <tr v-for="organisation in organizations">
+               <tr v-for="organisation in organizations" :key="organisation.id">
                   <td>
                      <input type="checkbox" class="checkbox">
                   </td>
