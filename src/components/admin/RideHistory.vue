@@ -1,12 +1,12 @@
 <template>
   <div class="container flex flex-col justify-start bg-white p-4">
     <div class="flex items-center justify-between p-4">
-      <h2 class="mb-4 text-[1.7rem] font-bold">Ride History</h2>
+      <h2 class="mb-4 text-lg font-bold">Ride History</h2>
     </div>
 
     <div class="w-full">
       <div
-        class="relative my-4 bg-brand-gray p-4 text-xl font-medium"
+        class="relative my-4 bg-brand-gray p-4 text-md font-medium"
         v-for="(rides, index) in rideHistory"
         :key="index"
       >

@@ -1,27 +1,24 @@
 <template>
-  <div
-    class="container flex w-full flex-col justify-between bg-white"
-  >
-    <div class="flex h-full flex-col justify-between">
-      <div class="m-4 flex items-center justify-between">
-        <h2 class="mb-4 text-[1.7rem] font-bold">Payment Methods</h2>
+  <div class="container flex w-full flex-col bg-white">
+    <div class="flex h-full flex-col">
+      <div class="flex items-center justify-between gap-2 py-8">
+        <h2 class="text-lg font-bold">Payment Methods</h2>
         <EditIcon />
       </div>
-      <div class="mx-4 mb-[5rem]">
+      <div class="mb-[5rem]">
         <CreditCardComponent :cardDetails="creditCard" />
+
+        <div class="my-10 flex flex-col gap-y-[1.5rem] bg-brand-gray p-3">
+          <h2
+            class="text-md flex items-center"
+            v-for="({ title, value }, index) in cardInfo"
+            :key="index"
+          >
+            <h2 class="text-sm w-20">{{ title }}:</h2>
+            <h2 class="text-sm font-semibold">{{ value }}</h2>
+          </h2>
+        </div>
       </div>
-    </div>
-    <div
-      class="flex h-[20.6rem] flex-col gap-y-[3rem] bg-brand-gray p-[2.6rem]"
-    >
-      <h2
-        class="flex justify-between text-[1.3rem]"
-        v-for="({ title, value }, index) in cardInfo"
-        :key="index"
-      >
-        <h2>{{ title }}</h2>
-        <h2>{{ value }}</h2>
-      </h2>
     </div>
   </div>
 </template>

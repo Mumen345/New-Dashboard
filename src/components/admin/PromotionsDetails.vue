@@ -1,12 +1,12 @@
 <template>
   <div class="container flex flex-col justify-around bg-white p-8">
     <div class="flex items-center justify-between">
-      <h2 class="mb-4 text-[1.7rem] font-bold">Promotions</h2>
+      <h2 class="mb-4 text-lg font-bold">Promotions</h2>
     </div>
 
     <div class="flex h-[18.6rem] flex-col gap-y-[3rem] mt-[3rem]">
       <h2
-        class="flex justify-between text-[1.3rem]"
+        class="flex justify-between text-md"
         v-for="({ title, value }, index) in promotions"
         :key="index"
       >
