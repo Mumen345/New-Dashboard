@@ -12,7 +12,7 @@
 
          <div class="container-xl pt-4 pb-5">
             <RouteDetailsComponent v-if="currentRoute.showDetails" />
-            <ActionComponent v-if="currentRoute.showDetails" />
+            <!-- <ActionComponent v-if="currentRoute.showDetails" /> -->
             <DashboardDetailsComponent v-if="!currentRoute.showDetails" />
             <div class="route relative min-h-screen">
                <DropdownComponent />
@@ -32,7 +32,6 @@ import { useRoute } from "vue-router";
 
 import SidebarComponent from "@/components/reusables/SidebarComponent.vue";
 import NavbarComponent from "@/components/reusables/NavbarComponent.vue";
-import ActionComponent from "@/components/reusables/ActionComponent.vue";
 import DashboardDetailsComponent from "@/components/reusables/DashboardDetailsComponent.vue";
 import RouteDetailsComponent from "@/components/reusables/RouteDetailsComponent.vue";
 import FooterComponent from "@/components/reusables/FooterComponent.vue";

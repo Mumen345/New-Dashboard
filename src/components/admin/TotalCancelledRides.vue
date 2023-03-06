@@ -7,11 +7,11 @@
     >
       <CancelIcon />
     </div>
-    <h2 class="my-8 text-[1.4rem] font-medium text-dark">
+    <h2 class="my-8 text-lg font-medium text-dark">
       Total Cancelled Rides
     </h2>
-    <h2 class="text-[1.4rem]">
-      <span class="text-[2.6rem]">{{ cancelledRides }}</span> Rides
+    <h2 class="text-2xl">
+      <span>{{ cancelledRides }}</span> Rides
     </h2>
   </div>
 </template>

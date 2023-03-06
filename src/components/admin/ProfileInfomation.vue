@@ -1,13 +1,13 @@
 <template>
   <div
-    class="container flex w-full flex-col items-center justify-between bg-white text-white"
+    class="container flex w-full py-4 flex-col items-center justify-between bg-white text-white"
   >
     <img
       :src="backgroundImage"
       alt=""
-      class="mt-8 block h-[21rem] w-[21rem] rounded-lg"
+      class="mt-8 block h-[15rem] w-[16rem] rounded-lg"
     />
-    <p class="my-12 mx-auto text-center text-[2rem] font-bold text-brand-dark">
+    <p class="my-12 mx-auto text-center text-lg font-bold text-brand-dark">
       {{ firstname }} {{ lastname }}
     </p>
 

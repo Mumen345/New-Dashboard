@@ -12,26 +12,26 @@
       >
         <!-- First Column  -->
         <div class="flex h-full flex-col items-start justify-around capitalize">
-          <h2 class="capitalize">
+          <h2 class="capitalize text-sm">
             User ID :<span class="ml-4"> {{ ride.userID }}</span>
           </h2>
-          <h2 class="capitalize">
+          <h2 class="capitalize text-sm">
             Role :<span class="ml-4"> {{ ride.role }}</span>
           </h2>
-          <h2 class="capitalize">
+          <h2 class="capitalize text-sm">
             Cost :<span class="ml-4">{{ ride.cost }}</span>
           </h2>
         </div>
 
         <!-- Second Coumn -->
         <div class="flex h-full flex-col items-start justify-around capitalize">
-          <h2 class="">
+          <h2 class="text-sm">
             Journey ID : <span class="ml-4"> {{ ride.journeryId }}</span>
           </h2>
-          <h2 class="">
+          <h2 class="text-sm">
             Status : <span class="ml-4"> {{ ride.status }}</span>
           </h2>
-          <h2 class="">
+          <h2 class="text-sm">
             Complete : <span class="ml-4"> {{ ride.complete }}</span>
           </h2>
         </div>
@@ -40,29 +40,29 @@
         <div class="flex h-full flex-col items-start justify-around capitalize">
           <h2 class="table">
             <OriginIcon />
-            <span class="ml-4">Origin : {{ ride.origin }}</span>
+            <span class="ml-4 text-sm ">Origin : {{ ride.origin }}</span>
           </h2>
           <h2 class="ml-2"><VerticalLine /></h2>
           <h2 class="table">
             <DownLocationIcon />
-            <span class="ml-4">Destination : {{ ride.destination }}</span>
+            <span class="ml-4 text-sm">Destination : {{ ride.destination }}</span>
           </h2>
         </div>
         <!-- Last Column  -->
         <div class="flex h-full flex-col items-start justify-around capitalize">
           <h2 class="mb-4 table justify-start">
-            <CarIcon /><span class="ml-4 block uppercase">{{
+            <CarIcon /><span class="ml-4 text-sm block uppercase">{{
               ride.carModel
             }}</span>
           </h2>
           <h2 class="table">
             <TimeIcon />
-            <span class="ml-4 block uppercase">{{ ride.start_time }}</span>
+            <span class="ml-4 block uppercase text-sm">{{ ride.start_time }}</span>
           </h2>
           <h2 class="ml-2"><VerticalLine /></h2>
           <h2 class="table">
             <TimeIcon />
-            <span class="ml-4 block uppercase">{{ ride.end_time }}</span>
+            <span class="ml-4 block uppercase text-sm">{{ ride.end_time }}</span>
           </h2>
         </div>
       </div>

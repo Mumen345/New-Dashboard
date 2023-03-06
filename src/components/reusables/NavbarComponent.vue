@@ -1,6 +1,6 @@
 <template>
    <div class="flex h-20 w-full items-center justify-end gap-x-10 bg-white p-4">
-      <h2 class="text-xl font-bold">{{ username }}</h2>
+      <h2 class="text-xl font-bold">{{ username }} </h2>
       <img :src="profilePicture" alt="" class="block h-12 w-12 rounded-full" />
    </div>
 </template>

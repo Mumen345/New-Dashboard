@@ -1,12 +1,12 @@
 <template>
-  <div class="container flex flex-col justify-around bg-white p-8">
+  <div class="container flex flex-col gap-6 bg-white p-8">
     <div class="mx-auto flex items-center justify-between" :class="customClass">
-      <h2 class="max-auto mb-4 text-[1.7rem] font-bold">Residential Address</h2>
+      <h2 class="max-auto text-lg font-bold">Residential Address</h2>
       <EditIcon />
     </div>
 
     <div
-      class="mx-auto flex flex-col justify-between gap-y-4 text-[1.3rem]"
+      class="mx-auto flex flex-col justify-between gap-y-4 text-md"
       :class="customClass"
     >
       <h2

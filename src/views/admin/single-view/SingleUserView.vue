@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-between gap-[2rem]">
     <h1 class="text-[3rem] font-bold">Account Information</h1>
-    <div class="profile-grid grid gap-x-[2rem]">
+    <div class="profile-grid grid gap-x-[1rem]">
       <ProfileInfomation
         :firstname="profileInfomation.firstname"
         :lastname="profileInfomation.lastname"

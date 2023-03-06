@@ -1,4 +1,7 @@
 <template>
+  <div class="mb-4">
+    <ActionComponent />
+  </div>
   <div class="relative h-full w-full">
     <TableGridComponent
       :headings="headings"
@@ -16,6 +19,7 @@ import { ref, onMounted } from "vue";
 import { routeDetails } from "@/stores/routeDetails.js";
 import { filterTable } from "@/stores/search-filter";
 import TableGridComponent from "@/components/reusables/TableGridComponent.vue";
+import ActionComponent from "@/components/reusables/ActionComponent.vue";
 
 const currentRoute = routeDetails();
 const filterTableStore = filterTable();
