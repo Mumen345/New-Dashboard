@@ -8,3 +8,7 @@ export const getUsers  = () => {
 export const getOrganizations  = () => {
    return http.get('/organizations')
 }
+
+export const getUsersProfile = () => {
+   return http.get('/userprofiles')
+}

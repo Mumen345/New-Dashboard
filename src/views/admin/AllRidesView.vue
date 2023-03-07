@@ -96,7 +96,7 @@ const rideHistory = ref([
     carModel: "Volvo",
   },
 ]);
-onMounted(() => (currentRoute.name = "All Rides"));
+currentRoute.name = "All Rides"
 </script>
 <style lang="scss">
 .columns {
