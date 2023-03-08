@@ -1,31 +1,103 @@
 <template>
-  <div>
-    <TableGridComponent
-      :headings="headings"
-      :list="users"
-      route="organizations"
-    />
+   <div class="mb-4">
+    <ActionComponent :showAction="isCheckedAll" :checkBoxIsClicked="checkedCheckbox" />
+
+    <div
+      class="mt-7 mb-8 overflow-x-auto rounded border bg-white px-0 sm:py-3 sm:px-3"
+    >
+      <table class="table" id="table" width="100%">
+        <thead class="thead-light">
+          <tr class="uppercase">
+            <th>
+              <input type="checkbox" @click="isCheckedAll = ! isCheckedAll" />
+            </th>
+            <th>Name</th>
+            <th>RefCode</th>
+            <th>OwnerId</th>
+            <th>Status</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="network in networks" :key="network.id">
+            <td>
+              <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox" />
+            </td>
+            <td>{{ network.name }}</td>
+            <td>{{ network.refcode }}</td>
+            <td>{{ network.owner_id }}</td>
+            <td>
+              <span
+                :class="useStatusStyle(network.status)"
+                class="flex w-32 items-center justify-center rounded p-2 capitalize text-white"
+              >
+                {{ useStatusContent(network.status) }}</span
+              >
+            </td>
+            <td>{{ network.description }}</td>
+            <td>
+              <div class="static">
+                <a
+                  type="button"
+                  class="text-lg font-bold text-neutral-400 hover:text-blue-500"
+                  data-dropdown-toggle="dropdown"
+                  data-popper-placement="bottom-end"
+                >
+                  <i class="material-icons pointer-events-none">more_horiz</i>
+                </a>
+                <div class="z-10 hidden w-48 rounded bg-white py-5">
+                  <a
+                    class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100"
+                    >View</a
+                  >
+                  <a
+                    class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100"
+                  >
+                    Delete
+                  </a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script setup>
-import axios from "axios";
 import { ref, onMounted } from "vue";
 import { routeDetails } from "@/stores/routeDetails";
 import { filterTable } from "@/stores/search-filter";
-import TableGridComponent from "@/components/reusables/TableGridComponent.vue";
+import { getNetworks } from "@/apis/accountApi";
+import { useStatusStyle } from "@/composables/useStatusStyle";
+import { useStatusContent } from "@/composables/useStatusContent";
+import ActionComponent from "@/components/reusables/ActionComponent.vue";
+
+const isCheckedAll = ref(false);
+const checkedCheckbox = ref(false);
 
 const currentRoute = routeDetails();
 currentRoute.name = "Networks";
 const filterTableStore = filterTable();
-const users = ref([]);
-const headings = ref(["name", "refcode", "owner_id", "status", "description"]);
-onMounted(async () => {
-  const { data } = await axios.get(import.meta.env.VITE_API_URL + "/networks");
-  if (data) users.value = data.data;
+const networks = ref([]);
 
-  filterTableStore.allItems = users.value;
+onMounted(async () => {
+  const { data } = await getNetworks();
+
+  console.log(data);
+  if (data) networks.value = data.data;
+
+  filterTableStore.allItems = networks.value;
 });
+
+function updateCheckbox(){
+  if(document.querySelector('.checkbox:checked')){
+    return checkedCheckbox.value = true
+  }
+  checkedCheckbox.value = false
+}
+
 </script>
 
-<style lang="scss" scoped></style>

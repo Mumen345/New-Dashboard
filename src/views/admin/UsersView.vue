@@ -29,10 +29,10 @@
             <td>{{ user.phone_number }}</td>
             <td>
               <span
-                :class="statusStyles(user.status)"
+                :class="useStatusStyle(user.status)"
                 class="flex w-32 items-center justify-center rounded p-2 capitalize text-white"
               >
-                {{ statusContent(user.status) }}</span
+                {{ useStatusContent(user.status) }}</span
               >
             </td>
             <td>{{ formatDate(user.created_at) }}</td>
@@ -67,18 +67,21 @@
 </template>
 
 <script setup>
+
 import { ref, onMounted } from "vue";
 import { routeDetails } from "@/stores/routeDetails.js";
-import { filterTable } from "@/stores/search-filter";
+// import { filterTable } from "@/stores/search-filter";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
 import { getUsers, getUsersProfile } from "@/apis/accountApi";
+import { useStatusStyle } from "@/composables/useStatusStyle";
+import { useStatusContent } from "@/composables/useStatusContent";
 
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
 
 const currentRoute = routeDetails();
 currentRoute.name = "Users";
-const filterTableStore = filterTable();
+// const filterTableStore = filterTable();
 const users = ref([]);
 onMounted(async () => {
   // get user data
@@ -112,7 +115,7 @@ onMounted(async () => {
   });
 
   users.value = userWithProfile;
-  filterTableStore.allItems = users.value;
+  // filterTableStore.allItems = users.value;
 });
 
 function formatDate(value) {
@@ -127,25 +130,6 @@ function updateCheckbox(){
     return checkedCheckbox.value = true
   }
   checkedCheckbox.value = false
-}
-
-function statusStyles(status) {
-  if (["active", "verified", "true", true].includes(status)) return "bg-brand";
-  if (
-    ["rejected", "not_verified", "false", "no profile", false].includes(status)
-  )
-    return "bg-red-500";
-  if (["request", "registered", "confirmed"].includes(status))
-    return "bg-yellow-400";
-  return "bg-gray-400";
-}
-
-function statusContent(status) {
-  if (status === "active" || status === true) return "active";
-  if (status === "request") return "request";
-  if (status === "rejected") return "rejected";
-  if (status === false) return "inactive";
-  return status;
 }
 
 
