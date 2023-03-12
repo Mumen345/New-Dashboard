@@ -9,7 +9,7 @@
         <thead class="thead-light">
           <tr class="uppercase">
             <th>
-               <input type="checkbox" @click="isCheckedAll = ! isCheckedAll" />
+               <input type="checkbox" @click="selectAll" />
             </th>
             <th>ID</th>
             <th>Name</th>
@@ -21,7 +21,7 @@
         <tbody>
           <tr v-for="organisation in orgsData" :key="organisation.id">
             <td>
-               <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox" />
+               <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox(organisation.id)" />
             </td>
             <td>{{ organisation.id }}</td>
             <td>{{ organisation.name }}</td>
@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import { routeDetails } from "@/stores/routeDetails.js";
 import { filterTable } from "@/stores/search-filter";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
@@ -74,10 +74,49 @@ const currentRoute = routeDetails();
 currentRoute.name = "Organizations";
 const filterTableStore = filterTable();
 let organizations = ref([]);
-const filters = ref([]);
 
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
+
+
+
+// check ids
+const selectedIds = ref([]);
+
+const isSelected = (id) => {
+  return selectedIds.value.includes(id);
+};
+
+const toggleSelection = (id) => {
+  if (isSelected(id)) {
+    // Remove the id from the array
+    const index = selectedIds.value.indexOf(id);
+    selectedIds.value.splice(index, 1);
+  } else {
+    // Add the id to the array
+    selectedIds.value.push(id);
+  }
+};
+
+function updateCheckbox(id) {
+  // Toggle selection here
+  toggleSelection(id);
+
+  if (document.querySelector(".checkbox:checked")) {
+    return (checkedCheckbox.value = true);
+  }
+  checkedCheckbox.value = false;
+}
+
+function selectAll(){
+  isCheckedAll.value = !isCheckedAll.value
+  if(selectedIds.value.length > 0){
+    selectedIds.value.splice(0, selectedIds.value.length);
+  } else{
+    selectedIds.value = orgsData.value.map(item => item.id);
+  }
+  
+}
 
 
 onMounted(async () => {
@@ -109,10 +148,8 @@ const orgsData = computed(() => {
   return organizations.value;
 });
 
-function updateCheckbox(){
-  if(document.querySelector('.checkbox:checked')){
-    return checkedCheckbox.value = true
-  }
-  checkedCheckbox.value = false
-}
+onUnmounted(() => {
+  search.value = null;
+});
+
 </script>

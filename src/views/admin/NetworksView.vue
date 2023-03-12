@@ -9,7 +9,7 @@
         <thead class="thead-light">
           <tr class="uppercase">
             <th>
-              <input type="checkbox" @click="isCheckedAll = ! isCheckedAll" />
+              <input type="checkbox" @click="selectAll" />
             </th>
             <th>Name</th>
             <th>RefCode</th>
@@ -22,7 +22,7 @@
         <tbody>
           <tr v-for="network in networksData" :key="network.id">
             <td>
-              <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox" />
+              <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox(network.id)" />
             </td>
             <td>{{ network.name }}</td>
             <td>{{ network.refcode }}</td>
@@ -67,9 +67,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import { routeDetails } from "@/stores/routeDetails";
-import { filterTable } from "@/stores/search-filter";
 import { getNetworks } from "@/apis/accountApi";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
@@ -87,6 +86,44 @@ const currentRoute = routeDetails();
 currentRoute.name = "Networks";
 
 const networks = ref([]);
+
+// check ids
+const selectedIds = ref([]);
+
+const isSelected = (id) => {
+  return selectedIds.value.includes(id);
+};
+
+const toggleSelection = (id) => {
+  if (isSelected(id)) {
+    // Remove the id from the array
+    const index = selectedIds.value.indexOf(id);
+    selectedIds.value.splice(index, 1);
+  } else {
+    // Add the id to the array
+    selectedIds.value.push(id);
+  }
+};
+
+function updateCheckbox(id) {
+  // Toggle selection here
+  toggleSelection(id);
+
+  if (document.querySelector(".checkbox:checked")) {
+    return (checkedCheckbox.value = true);
+  }
+  checkedCheckbox.value = false;
+}
+
+function selectAll(){
+  isCheckedAll.value = !isCheckedAll.value
+  if(selectedIds.value.length > 0){
+    selectedIds.value.splice(0, selectedIds.value.length);
+  } else{
+    selectedIds.value = networks.value.map(item => item.id);
+  }
+  
+}
 
 onMounted(async () => {
   const { data } = await getNetworks();
@@ -109,12 +146,9 @@ const networksData = computed(() => {
   return networks.value;
 });
 
-function updateCheckbox(){
-  if(document.querySelector('.checkbox:checked')){
-    return checkedCheckbox.value = true
-  }
-  checkedCheckbox.value = false
-}
+onUnmounted(() => {
+  search.value = null;
+});
 
 </script>
 
