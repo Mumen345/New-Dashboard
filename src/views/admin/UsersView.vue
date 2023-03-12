@@ -1,6 +1,9 @@
 <template>
   <div class="mb-4">
-    <ActionComponent :showAction="isCheckedAll" :checkBoxIsClicked="checkedCheckbox" />
+    <ActionComponent
+      :showAction="isCheckedAll"
+      :checkBoxIsClicked="checkedCheckbox"
+    />
 
     <div
       class="mt-7 mb-8 overflow-x-auto rounded border bg-white px-0 sm:py-3 sm:px-3"
@@ -9,7 +12,7 @@
         <thead class="thead-light">
           <tr class="uppercase">
             <th>
-              <input type="checkbox" @click="isCheckedAll = ! isCheckedAll" />
+              <input type="checkbox" @click="isCheckedAll = !isCheckedAll" />
             </th>
             <th>Name</th>
             <th>Email</th>
@@ -20,9 +23,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" :key="user.id">
+          <tr v-for="user in userFinalData" :key="user.id">
             <td>
-              <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox" />
+              <input
+                type="checkbox"
+                class="checkbox"
+                :checked="isCheckedAll"
+                @click="updateCheckbox"
+              />
             </td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
@@ -67,14 +75,18 @@
 </template>
 
 <script setup>
-
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch, onUnmounted } from "vue";
 import { routeDetails } from "@/stores/routeDetails.js";
 // import { filterTable } from "@/stores/search-filter";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
 import { getUsers, getUsersProfile } from "@/apis/accountApi";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
+import { storeToRefs } from "pinia";
+import { useSearchKeyword } from "@/stores/useSearchKeyword";
+
+const store = useSearchKeyword();
+const { search } = storeToRefs(store);
 
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
@@ -118,6 +130,19 @@ onMounted(async () => {
   // filterTableStore.allItems = users.value;
 });
 
+const userFinalData = computed(() => {
+  if (search.value.length > 0) {
+    return users.value.filter((item) =>
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string" &&
+          value.toLowerCase().includes(search.value.toLowerCase())
+      )
+    );
+  }
+  return users.value;
+});
+
 function formatDate(value) {
   const newDate = new Date(value);
   return newDate.toLocaleDateString("default", {
@@ -125,12 +150,14 @@ function formatDate(value) {
   });
 }
 
-function updateCheckbox(){
-  if(document.querySelector('.checkbox:checked')){
-    return checkedCheckbox.value = true
+function updateCheckbox() {
+  if (document.querySelector(".checkbox:checked")) {
+    return (checkedCheckbox.value = true);
   }
-  checkedCheckbox.value = false
+  checkedCheckbox.value = false;
 }
 
-
+onUnmounted(() => {
+  search.value = null;
+})
 </script>

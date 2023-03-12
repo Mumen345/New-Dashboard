@@ -19,7 +19,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="organisation in organizations" :key="organisation.id">
+          <tr v-for="organisation in orgsData" :key="organisation.id">
             <td>
                <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox" />
             </td>
@@ -58,11 +58,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { routeDetails } from "@/stores/routeDetails.js";
 import { filterTable } from "@/stores/search-filter";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
 import { getOrganizations } from "@/apis/accountApi";
+import { useSearchKeyword } from "../../stores/useSearchKeyword";
+import { storeToRefs } from "pinia";
+
+// store
+const store = useSearchKeyword();
+const { search } = storeToRefs(store);
 
 const currentRoute = routeDetails();
 currentRoute.name = "Organizations";
@@ -88,6 +94,19 @@ onMounted(async () => {
   }
 
   filterTableStore.allItems = organizations.value;
+});
+
+const orgsData = computed(() => {
+  if (search.value.length > 0) {
+    return organizations.value.filter((item) =>
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string" &&
+          value.toLowerCase().includes(search.value.toLowerCase())
+      )
+    );
+  }
+  return organizations.value;
 });
 
 function updateCheckbox(){
