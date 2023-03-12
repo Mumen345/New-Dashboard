@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="driver in drivers" :key="driver.id">
+          <tr v-for="driver in driversData" :key="driver.id">
             <td>
               <input
                 type="checkbox"
@@ -75,13 +75,19 @@
 <script setup>
 import { routeDetails } from "@/stores/routeDetails.js";
 import { filterTable } from "@/stores/search-filter";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
 import { getDrivers } from "@/apis/accountApi";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
+import { storeToRefs } from "pinia";
+import { useSearchKeyword } from "../../stores/useSearchKeyword";
 
 // store
+const store = useSearchKeyword();
+const { search } = storeToRefs(store);
+
+
 const currentRoute = routeDetails();
 currentRoute.name = "Drivers";
 const filterTableStore = filterTable();
@@ -96,6 +102,22 @@ onMounted(async () => {
   if (data) drivers.value = data.data;
   filterTableStore.allItems = drivers.value;
 });
+
+
+const driversData = computed(() => {
+  if (search.value.length > 0) {
+    return drivers.value.filter((item) =>
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string" &&
+          value.toLowerCase().includes(search.value.toLowerCase())
+      )
+    );
+  }
+  return drivers.value;
+});
+
+
 
 
 

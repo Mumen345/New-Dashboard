@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="network in networks" :key="network.id">
+          <tr v-for="network in networksData" :key="network.id">
             <td>
               <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox" />
             </td>
@@ -67,29 +67,46 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { routeDetails } from "@/stores/routeDetails";
 import { filterTable } from "@/stores/search-filter";
 import { getNetworks } from "@/apis/accountApi";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
+import { useSearchKeyword } from "@/stores/useSearchKeyword";
+import { storeToRefs } from "pinia";
+
+const store = useSearchKeyword();
+const { search } = storeToRefs(store);
 
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
 
 const currentRoute = routeDetails();
 currentRoute.name = "Networks";
-const filterTableStore = filterTable();
+
 const networks = ref([]);
 
 onMounted(async () => {
   const { data } = await getNetworks();
 
-  console.log(data);
   if (data) networks.value = data.data;
 
   filterTableStore.allItems = networks.value;
+});
+
+const networksData = computed(() => {
+  if (search.value.length > 0) {
+    return networks.value.filter((item) =>
+      Object.values(item).some(
+        (value) =>
+          typeof value === "string" &&
+          value.toLowerCase().includes(search.value.toLowerCase())
+      )
+    );
+  }
+  return networks.value;
 });
 
 function updateCheckbox(){

@@ -7,8 +7,8 @@
         placeholder="Search"
         class="form-control rounded"
         autocomplete="current-text"
-        v-model.lazy="filterTableStore.input"
-        @keyup.enter="filterTableStore.searchUsers"
+        v-model="search"
+      
       />
     </div>
 
@@ -100,12 +100,25 @@
 <script setup>
 import SortIcon from "../icons/SortIcon.vue";
 import FilterIcon from "../icons/FilterIcon.vue";
-import { filterTable } from "@/stores/search-filter";
+// import { filterTable } from "@/stores/search-filter";
 import ListItem from "@/components/ListItem.vue";
-const filterTableStore = filterTable();
+import { useSearchKeyword } from "@/stores/useSearchKeyword";
+
+import { storeToRefs } from "pinia";
+// const filterTableStore = filterTable();
+
+const store = useSearchKeyword();
+const { search } = storeToRefs(store)
+
+
+// watch(search, (newValue, oldValue)=>{
+//   console.log(`the value changed from ${newValue} to ${oldValue}`);
+// })
 
 defineProps({
   showAction: Boolean,
   checkBoxIsClicked: Boolean,
 });
+
+
 </script>
