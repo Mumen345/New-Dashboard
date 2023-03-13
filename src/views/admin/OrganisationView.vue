@@ -149,7 +149,8 @@ const orgsData = computed(() => {
 });
 
 onUnmounted(() => {
-  search.value = null;
-});
+    search.value = "";
+  });
+
 
 </script>

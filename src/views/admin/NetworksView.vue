@@ -129,8 +129,6 @@ onMounted(async () => {
   const { data } = await getNetworks();
 
   if (data) networks.value = data.data;
-
-  filterTableStore.allItems = networks.value;
 });
 
 const networksData = computed(() => {
@@ -147,8 +145,9 @@ const networksData = computed(() => {
 });
 
 onUnmounted(() => {
-  search.value = null;
-});
+    search.value = "";
+  });
+
 
 </script>
 

@@ -191,6 +191,7 @@ function formatDate(value) {
 }
 
 onUnmounted(() => {
-  search.value = null;
-});
+    search.value = "";
+  });
+
 </script>

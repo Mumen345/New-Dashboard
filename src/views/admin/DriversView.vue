@@ -157,7 +157,10 @@ const driversData = computed(() => {
   return drivers.value;
 });
 
+
 onUnmounted(() => {
-  search.value = null;
-});
+    search.value = "";
+  });
+
+
 </script>
