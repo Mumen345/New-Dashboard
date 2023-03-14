@@ -12,7 +12,7 @@
         <thead class="thead-light">
           <tr class="uppercase">
             <th>
-              <input type="checkbox" @click="isCheckedAll = !isCheckedAll" />
+              <input type="checkbox" @click="selectAll" />
             </th>
             <th>UserId</th>
             <th>License</th>
@@ -28,7 +28,7 @@
                 type="checkbox"
                 class="checkbox"
                 :checked="isCheckedAll"
-                @click="updateCheckbox"
+                @click="updateCheckbox(driver.id)"
               />
             </td>
             <td>{{ driver.user_id }}</td>
@@ -75,7 +75,7 @@
 <script setup>
 import { routeDetails } from "@/stores/routeDetails.js";
 import { filterTable } from "@/stores/search-filter";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, onUnmounted } from "vue";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
 import { getDrivers } from "@/apis/accountApi";
 import { useStatusStyle } from "@/composables/useStatusStyle";
@@ -96,6 +96,46 @@ const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
 
 const drivers = ref([]);
+
+// check ids
+const selectedIds = ref([]);
+
+const isSelected = (id) => {
+  return selectedIds.value.includes(id);
+};
+
+const toggleSelection = (id) => {
+  if (isSelected(id)) {
+    // Remove the id from the array
+    const index = selectedIds.value.indexOf(id);
+    selectedIds.value.splice(index, 1);
+  } else {
+    // Add the id to the array
+    selectedIds.value.push(id);
+  }
+};
+
+function updateCheckbox(id) {
+  // Toggle selection here
+  toggleSelection(id);
+
+  if (document.querySelector(".checkbox:checked")) {
+    return (checkedCheckbox.value = true);
+  }
+  checkedCheckbox.value = false;
+}
+
+function selectAll(){
+  isCheckedAll.value = !isCheckedAll.value
+  if(selectedIds.value.length > 0){
+    selectedIds.value.splice(0, selectedIds.value.length);
+  } else{
+    selectedIds.value = drivers.value.map(item => item.id);
+  }
+  
+}
+
+
 
 onMounted(async () => {
   const { data } = await getDrivers();
@@ -118,13 +158,9 @@ const driversData = computed(() => {
 });
 
 
+onUnmounted(() => {
+    search.value = "";
+  });
 
 
-
-function updateCheckbox() {
-  if (document.querySelector(".checkbox:checked")) {
-    return (checkedCheckbox.value = true);
-  }
-  checkedCheckbox.value = false;
-}
 </script>
