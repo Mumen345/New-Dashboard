@@ -12,66 +12,49 @@ const routes = [
     component: HomePage,
   },
   {
-    path: "/admin",
-    component: AdminPage,
+    path: "/admin/dashboard",
+    component: () => import("../views/admin/DashboardView.vue"),
     meta: metaData,
-    children: [
-      {
-        path: "dashboard",
-        component: () => import("../views/admin/DashboardView.vue"),
-        meta: metaData,
-      },
-      {
-        path: "users",
-        children: [
-          {
-            path: "",
-            component: () => import("../views/admin/UsersView.vue"),
-            meta: metaData,
-          },
-          {
-            name: "users",
-            path: ":id",
-            component: () =>
-              import("../views/admin/single-view/SingleUserView.vue"),
-            meta: metaData,
-          },
-        ],
-      },
-      {
-        path: "networks",
-        component: () => import("../views/admin/NetworksView.vue"),
-        meta: metaData,
-      },
-      {
-        path: "organizations",
-        children: [
-          {
-            path: "",
-            component: () => import("../views/admin/OrganisationView.vue"),
-            meta: metaData,
-          },
-          {
-            name: "organizations",
-            path: ":id",
-            component: () =>
-              import("../views/admin/single-view/SingleOrganisationView.vue"),
-            meta: metaData,
-          },
-        ],
-      },
-      {
-        name: "drivers",
-        path: "drivers",
-        component: () => import("../views/admin/DriversView.vue"),
-        meta: metaData,
-      },
-      {
-        path: "all-rides",
-        component: () => import("../views/admin/AllRidesView.vue"),
-        meta: metaData,
-      },
-    ],
+  },
+
+  {
+    path: "/admin/users",
+    component: () => import("../views/admin/UsersView.vue"),
+    meta: metaData,
+  },
+  {
+    name: "users",
+    path: "/admin/users/:id",
+    component: () => import("../views/admin/single-view/SingleUserView.vue"),
+    meta: metaData,
+  },
+  {
+    path: "/admin/networks",
+    component: () => import("../views/admin/NetworksView.vue"),
+    meta: metaData,
+  },
+  {
+    path: "/admin/organizations",
+    component: () => import("../views/admin/OrganisationView.vue"),
+    meta: metaData,
+  },
+  {
+    name: "organizations",
+    path: "/admin/organizations/:id",
+    component: () =>
+      import("../views/admin/single-view/SingleOrganisationView.vue"),
+    meta: metaData,
+  },
+  {
+    name: "drivers",
+    path: "/admin/drivers",
+    component: () => import("../views/admin/DriversView.vue"),
+    meta: metaData,
+  },
+  {
+    path: "/admin/all-rides",
+    component: () => import("../views/admin/AllRidesView.vue"),
+    meta: metaData,
   },
   {
     path: "/forgot-password",

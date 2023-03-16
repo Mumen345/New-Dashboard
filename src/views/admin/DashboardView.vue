@@ -1,33 +1,36 @@
 <template>
-   <div class="">
-      <div class="grid grid-cols-2 gap-4 mb-5">
-         <DashboardOrganisations :organisationCount="dashboard.organization" />
-         <div class="grid grid-cols-2 gap-4">
-            <div class="">
-               <DashboardUsers :usersCount="dashboard.users" />
-            </div>
+   <main-layout>
+      <div class="">
+         <div class="grid grid-cols-2 gap-4 mb-5">
+            <DashboardOrganisations :organisationCount="dashboard.organization" />
+            <div class="grid grid-cols-2 gap-4">
+               <div class="">
+                  <DashboardUsers :usersCount="dashboard.users" />
+               </div>
 
-            <div>
-               <PublicNetwork :publicNetwork="dashboard.public_network" />
-            </div>
-            <div class="">
-               <PrivateNetwork :privateNetwork="dashboard.private_network" />
-            </div>
+               <div>
+                  <PublicNetwork :publicNetwork="dashboard.public_network" />
+               </div>
+               <div class="">
+                  <PrivateNetwork :privateNetwork="dashboard.private_network" />
+               </div>
 
-            <div class="">
-               <DashboardDrivers :driversCount="dashboard.drivers" />
+               <div class="">
+                  <DashboardDrivers :driversCount="dashboard.drivers" />
+               </div>
             </div>
          </div>
+         <LineChart :categories="categories" :series="series" />
       </div>
-      <LineChart :categories="categories" :series="series" />
-   </div>
+   </main-layout>
 </template>
 
 <script setup>
 import LineChart from "@/components/admin/LineChart.vue";
 import { ref, onMounted } from "vue";
-
 import { routeDetails } from "@/stores/routeDetails";
+
+import MainLayout from "@/layouts/MainLayout.vue";
 import DashboardOrganisations from "@/components/admin/DashboardOrganisations.vue";
 import DashboardUsers from "@/components/admin/DashboardUsers.vue";
 import PublicNetwork from "@/components/admin/PublicNetwork.vue";
