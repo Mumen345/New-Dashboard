@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex flex-col gap-6 bg-white p-8">
+  <div class="flex flex-col gap-6 bg-white py-8 px-5">
     <div class="flex items-center justify-between" :class="customClass">
       <h2 class="text-lg font-bold">Account Details</h2>
       <EditIcon />

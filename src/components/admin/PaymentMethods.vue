@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex w-full flex-col bg-white">
+  <div class="flex w-full flex-col bg-white px-5">
     <div class="flex h-full flex-col">
       <div class="flex items-center justify-between gap-2 py-8">
         <h2 class="text-lg font-bold">Payment Methods</h2>
