@@ -20,7 +20,7 @@
       </div>
       <!-- Charts Container -->
       <div class="relative">
-         <VueApexCharts :options="chartOptions" :series="series" />
+         <VueApexCharts :options="chartOptions" :series="series"></VueApexCharts>
       </div>
    </div>
 </template>
@@ -28,8 +28,8 @@
 <script setup>
 import VueApexCharts from "vue3-apexcharts";
 import ButtonComponent from "../reusables/ButtonComponent.vue";
+import { ref, watch } from "vue";
 
-import { ref } from "vue";
 const ChartButtons = ref([
    { name: "Weekly", isSelected: false },
    { name: "Monthly", isSelected: true },
@@ -46,11 +46,13 @@ const props = defineProps({
       required: true,
    },
 });
+
 const chartCount = ref([
    { title: "Views", count: 400 },
    { title: "Visits", count: 974 },
    { title: "Downloads", count: 1986 },
 ]);
+
 const chartOptions = ref({
    chart: {
       type: "area",
@@ -73,10 +75,16 @@ const chartOptions = ref({
       enabled: false,
    },
    xaxis: {
-      type: "date-time",
-      categories: props.categories,
+      categories: [...props.categories],
    },
+   noData: {
+    text: 'Loading...'
+   }
 });
+
+watch(() => [props.categories, props.series], () => {
+   chartOptions.value.xaxis.categories = props.categories
+})
 </script>
 
 <style lang="scss" scoped></style>

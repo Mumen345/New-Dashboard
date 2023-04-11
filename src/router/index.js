@@ -5,13 +5,6 @@ import { useAuthStore } from '@/stores/auth'
 import { useGeneralStore } from '@/stores/general'
 // import '@/assets/nprogress.css'
 
-// NProgress.configure({
-//     easing: 'ease',
-//     speed: 1000,
-//     trickleSpeed: 500,
-//     showSpinner: true
-// })
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes
@@ -27,16 +20,5 @@ router.beforeEach(async (to, from) => {
         return { path: '/login', query: { redirect: 'forbidden' } }
     }
 })
-
-
-// router.beforeResolve(async (to, from) => {
-//     if (to.name) {
-//         NProgress.start()  
-//     }
-// })
-
-// router.afterEach((to, from) => {
-//     NProgress.done()
-// })
 
 export default router
