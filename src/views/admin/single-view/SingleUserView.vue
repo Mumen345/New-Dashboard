@@ -37,6 +37,8 @@ import RideHistory from "@/components/admin/RideHistory.vue";
 import TotalRidesCount from "@/components/admin/TotalRidesCount.vue";
 import TotalCancelledRides from "@/components/admin/TotalCancelledRides.vue";
 import PromotionsDetails from "@/components/admin/PromotionsDetails.vue";
+import { useQuery } from "@tanstack/vue-query";
+import { userDetailsQuery } from "@/apis/accountApi";
 
 import axios from "axios";
 import { ref, onMounted } from "vue";
@@ -47,38 +49,44 @@ const userId = route.params.id;
 const profileInfomation = ref({});
 const accountInformation = ref({});
 
-const getUserData = async () => {
-   const userResponse = await axios.get(import.meta.env.VITE_API_URL + "/user/" + userId);
-   const user = userResponse.data.data;
-   var userProfile = {};
-   await axios.get(
-      import.meta.env.VITE_API_URL + "/userprofile/" + userId + "?is_userid=true"
-   ).then((response) => {
-      userProfile = response.data.data;
-      profileInfomation.value = {
-         firstname: userProfile.first_name,
-         lastname: userProfile.last_name,
-         address: userProfile.address,
-         email: user.email,
-         phone: user.phone_number,
-         backgroundImage: "data:image/png;base64, " + userProfile.profile_picture_src
-      };
-      accountInformation.value = {
-         firstname: userProfile.first_name,
-         lastname: userProfile.last_name,
-         gender: userProfile.gender,
-         state: userProfile.state
-      };
-   }
-   ).catch((error) => {
-      profileInfomation.value = {
-         email: user.email,
-         phone: user.phone_number
-      };
-   });
-};
+const { isLoading, isFetching, isError, data, error } = useQuery({
+  queryKey: ['userInformation'],
+   queryFn: userDetailsQuery(userId),
+  onSuccess: (data) => console.log(data)
+})
 
-onMounted(() => getUserData());
+// const getUserData = async () => {
+//    const userResponse = await axios.get(import.meta.env.VITE_API_URL + "/user/" + userId);
+//    const user = userResponse.data.data;
+//    var userProfile = {};
+//    await axios.get(
+//       import.meta.env.VITE_API_URL + "/userprofile/" + userId + "?is_userid=true"
+//    ).then((response) => {
+//       userProfile = response.data.data;
+//       profileInfomation.value = {
+//          firstname: userProfile.first_name,
+//          lastname: userProfile.last_name,
+//          address: userProfile.address,
+//          email: user.email,
+//          phone: user.phone_number,
+//          backgroundImage: "data:image/png;base64, " + userProfile.profile_picture_src
+//       };
+//       accountInformation.value = {
+//          firstname: userProfile.first_name,
+//          lastname: userProfile.last_name,
+//          gender: userProfile.gender,
+//          state: userProfile.state
+//       };
+//    }
+//    ).catch((error) => {
+//       profileInfomation.value = {
+//          email: user.email,
+//          phone: user.phone_number
+//       };
+//    });
+// };
+
+// onMounted(() => getUserData());
 </script>
 
 <style lang="scss" scoped>

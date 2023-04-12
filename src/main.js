@@ -1,6 +1,7 @@
 import { createApp, markRaw } from "vue";
 import { createPinia } from "pinia";
 import { createPersistedState } from 'pinia-plugin-persistedstate';
+import { VueQueryPlugin } from "@tanstack/vue-query";
 import Dropdown from './support/utils';
 
 import App from "./App.vue";
@@ -28,7 +29,7 @@ pinia.use(({ store }) => {
 app.use(Message, VMessageOptions);
 app.use(pinia);
 app.use(router);
-
+app.use(VueQueryPlugin)
 app.mount("#app");
 
 new Dropdown()
