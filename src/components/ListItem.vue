@@ -27,7 +27,7 @@ const handle = (event) => {
 </script>
 
 <template>
-   <a @click="handle" :class="{'bg-neutral-100': modelValue == checked}" class="block text-sm w-full hover:bg-neutral-100 px-5 py-2">
+   <a @click="handle" :class="{'bg-neutral-100': modelValue == checked}" class="block text-sm w-full hover:bg-neutral-100 px-5 py-2.5 cursor-pointer">
       <slot />
    </a>
 </template>

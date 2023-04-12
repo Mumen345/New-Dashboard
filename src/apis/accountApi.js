@@ -19,3 +19,13 @@ export const getDrivers = () => {
 export const getNetworks = () => {
   return http.get("/networks");
 }
+
+// Gets a single user information
+export const userDetailsQuery = (user) => {
+   return http.get(`/user/${user}`);
+} 
+
+// Gets a single user information
+export const dashboardQuery = () => {
+   return http.get('/dashboard');
+}
