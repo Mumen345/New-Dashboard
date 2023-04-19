@@ -29,3 +29,8 @@ export const userDetailsQuery = (user) => {
 export const dashboardQuery = () => {
    return http.get('/dashboard');
 }
+
+// Gets a single user information
+export const journeysQuery = () => {
+   return http.get('/trip/journey');
+}
