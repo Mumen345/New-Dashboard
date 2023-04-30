@@ -5,8 +5,9 @@
             <h2 class="mb-4 text-[1.7rem] font-bold">Account Information</h2>
          </div>
 
-         <div class="w-full" v-for="(journey, index) in journeys" :key="index">
-            <div class="grid grid-cols-10 gap-x-7 bg-brand-gray my-4 p-7 text-xl font-semibold" v-for="(ride, key) in journey" :key="key">
+         <div class="grid grid-cols-1 gap-4 bg-[#F9FAFC] border border-neutral-200 w-full p-2 sm:p-4 mb-5" v-for="(journey, index) in journeys" :key="index">
+            <div class="text-base font-semibold uppercase truncate mt-3">{{ index }}</div>
+            <div class="grid grid-cols-10 gap-x-7 bg-white rounded p-7 text-xl font-semibold" v-for="(ride, key) in journey" :key="key">
                <!-- First Column  -->
                <div class="col-span-2 flex h-full flex-col gap-y-3 capitalize">
                   <div class="flex items-center text-sm">
@@ -92,7 +93,7 @@ import { journeysQuery } from "@/apis/accountApi";
 
 const currentRoute = routeDetails();
 currentRoute.name = "All Rides"
-const journeys = ref([])
+const journeys = ref({})
 
 const { isLoading, isError } = useQuery({
    queryKey: ['journeys'],
