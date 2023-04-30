@@ -1,7 +1,7 @@
 import http from "./http";
 
 export const getUsers = () => {
-  return http.get("/users");
+  return http.get("/users?deleted=False");
 };
 
 export const getOrganizations = () => {
@@ -25,6 +25,11 @@ export const userDetailsQuery = (user) => {
    return http.get(`/user/${user}`);
 } 
 
+// Gets a single user profile data
+export const userProfileDetailsQuery = (user) => {
+  return http.get(`/userprofile/${user}/?is_userid=true`);
+} 
+
 // Gets a single user information
 export const dashboardQuery = () => {
    return http.get('/dashboard');
@@ -33,4 +38,9 @@ export const dashboardQuery = () => {
 // Gets a single user information
 export const journeysQuery = () => {
    return http.get('/trip/journey');
+}
+
+// approve organization
+export const approveOrgQuery = (org) => {
+  return http.post('/approveorganization', {'organizationid':`${org}`});
 }

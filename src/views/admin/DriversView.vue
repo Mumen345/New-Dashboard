@@ -13,7 +13,7 @@
                      <th>UserId</th>
                      <th>License</th>
                      <th>Insurance</th>
-                     <th>Status</th>
+                     <th>Verified</th>
                      <th>Actions</th>
                   </tr>
                </thead>

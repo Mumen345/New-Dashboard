@@ -25,14 +25,21 @@
                      <td>{{ organisation.id }}</td>
                      <td>{{ organisation.name }}</td>
                      <td>{{ organisation.domain_name }}</td>
-                     <td>{{ organisation.status }}</td>
+                     <td>
+                        <span
+                           :class="useStatusStyle(organisation.status)"
+                           class="flex w-32 items-center justify-center rounded p-2 capitalize text-white"
+                        >
+                           {{ useStatusContent(organisation.status) }}</span
+                        >
+                     </td>
                      <td>
                         <div class="static">
                            <a type="button" class="text-lg font-bold text-neutral-400 hover:text-blue-500" data-dropdown-toggle="dropdown" data-popper-placement="bottom-end">
                               <i class="material-icons pointer-events-none">more_horiz</i>
                            </a>
                            <div class="z-10 hidden w-48 rounded bg-white py-5">
-                              <a class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100">View</a>
+                              <a class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100" @click="approveOrg(`${organisation.id}`)">Approve</a>
                               <a class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100">
                                  Delete
                               </a>
@@ -54,9 +61,12 @@ import { filterTable } from "@/stores/search-filter";
 
 import MainLayout from "@/layouts/MainLayout.vue";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
-import { getOrganizations } from "@/apis/accountApi";
+import { useStatusStyle } from "@/composables/useStatusStyle";
+import { useStatusContent } from "@/composables/useStatusContent";
+import { getOrganizations, approveOrgQuery } from "@/apis/accountApi";
 import { useSearchKeyword } from "../../stores/useSearchKeyword";
 import { storeToRefs } from "pinia";
+import Message from "vue-m-message";
 
 // store
 const store = useSearchKeyword();
@@ -90,6 +100,12 @@ const toggleSelection = (id) => {
    }
 };
 
+const approveOrg = async (orgId) => {
+   await approveOrgQuery(orgId)
+      .then((response) => { Message.success("Organization approved!");})
+      .catch((error) => {Message.error(error.response.data.message);});
+}
+
 function updateCheckbox(id) {
    // Toggle selection here
    toggleSelection(id);
@@ -118,7 +134,7 @@ onMounted(async () => {
    var orgsData = data.data;
    orgsData = orgsData.map((x) => ({
       ...x,
-      status: true ? "verified" : "not_verified",
+      status: x.status==true ? "verified" : "not verified",
    }));
    if (data) {
       organizations.value = orgsData;

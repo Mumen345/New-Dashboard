@@ -68,7 +68,7 @@ const filterTableStore = filterTable();
 const checkAll = ref(false);
 const statusStyles = (status) => {
   if (["active", "verified", "true"].includes(status)) return "bg-brand";
-  if (["rejected","not_verified", "false"].includes(status)) return "bg-red-500";
+  if (["rejected","not verified", "false"].includes(status)) return "bg-red-500";
   if (["request"].includes(status)) return "bg-yellow-400";
   return "bg-gray-400";
 };
