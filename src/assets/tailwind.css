@@ -123,9 +123,17 @@ body {
       @apply bg-transparent border border-gray-300 text-gray-900 text-sm rounded outline-none focus:border-brand block w-full px-3 py-3
    }
 
+   .btn-light {
+      @apply text-gray-900 bg-white border focus:outline-none font-medium disabled:opacity-75 rounded text-sm px-4 py-3
+  }
+
    .btn-primary {
-      @apply bg-brand rounded text-sm py-3 px-4 disabled:bg-opacity-75 cursor-pointer
+      @apply focus:outline-none bg-brand text-white disabled:bg-opacity-75 cursor-pointer font-medium rounded text-sm px-4 py-3
    }
+
+   .btn-red {
+      @apply focus:outline-none text-white bg-red-600 hover:bg-red-700 disabled:opacity-75 font-medium rounded text-sm px-4 py-3
+  }
 
    .form-select {
       @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded focus:border-blue-500 block w-full
