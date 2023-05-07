@@ -41,6 +41,8 @@ const authStore = useAuthStore();
 const sidebars = markRaw([
   { name: "Dashboard", route: "/admin/dashboard", icon: DashboardIcon },
   { name: "Users", route: "/admin/users", icon: UsersIcon },
+  { name: "Biometric", route: "/admin/biometric", icon: UsersIcon },
+  { name: "Public Onboarding", route: "/admin/public-onboarding", icon: OrganizationIcon },
   { name: "Networks", route: "/admin/networks", icon: NetworksIcon },
   {
     name: "Organizations",

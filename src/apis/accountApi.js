@@ -44,3 +44,13 @@ export const journeysQuery = () => {
 export const approveOrgQuery = (org) => {
   return http.post('/approveorganization', {'organizationid':`${org}`});
 }
+
+// Get biometrics
+export const getBiometrics = () => {
+  return http.get('/biometric');
+}
+
+// Get public onboarding data
+export const getPublicOnboarding = () => {
+  return http.get('/public_onboarding');
+}

@@ -12,7 +12,7 @@
             <div class="dropdown-menu z-10 hidden w-48 rounded border border-neutral-200 bg-white py-4 shadow-xl">
                <ul>
                   <li class="px-2 py-1 hover:bg-slate-50"><button>View</button></li>
-                  <li class="px-2 py-1 hover:bg-slate-50"><button>Delete</button></li>
+                  <li class="px-2 py-1 hover:bg-slate-50"><button @click="downloadTable">Download</button></li>
                </ul>
             </div>
       </div>
@@ -57,14 +57,18 @@ import FilterIcon from "../icons/FilterIcon.vue";
 // import { filterTable } from "@/stores/search-filter";
 import ListItem from "@/components/ListItem.vue";
 import { useSearchKeyword } from "@/stores/useSearchKeyword";
-
+import { exportCSV } from "../../apis/exportCSV";
 import { storeToRefs } from "pinia";
+import { routeDetails } from "@/stores/routeDetails.js";
 // const filterTableStore = filterTable();
 
 const store = useSearchKeyword();
 const { search } = storeToRefs(store)
+const currentRoute = routeDetails();
 
-
+function downloadTable() {
+   exportCSV(currentRoute.name);
+}
 // watch(search, (newValue, oldValue)=>{
 //   console.log(`the value changed from ${newValue} to ${oldValue}`);
 // })

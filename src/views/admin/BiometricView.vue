@@ -11,37 +11,27 @@
                         <input type="checkbox" @click="selectAll" />
                      </th>
                      <th>Name</th>
-                     <th>License</th>
-                     <th>Insurance</th>
+                     <th>documents</th>
+                     <th>DL</th>
                      <th>Verified</th>
-                     <th>Actions</th>
+                     <th>SmileID Data</th>
+                     <th>Date</th>
                   </tr>
                </thead>
                <tbody>
-                  <tr v-for="driver in driversData" :key="driver.id">
+                  <tr v-for="biometric in biometricData" :key="biometric.id">
                      <td>
-                        <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox(driver.id)" />
+                        <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox(biometric.id)" />
                      </td>
-                     <td>{{ driver.name }}</td>
-                     <td>{{ driver.license }}</td>
-                     <td>{{ driver.insurance }}</td>
+                     <td>{{ biometric.name }}</td>
+                     <td>{{ biometric.documents }}</td>
+                     <td>{{ biometric.driver_license_verified }}</td>
                      <td>
-                        <span :class="useStatusStyle(driver.verified)" class="flex w-32 items-center justify-center rounded p-2 capitalize text-white">
-                           {{ useStatusContent(driver.verified) }}</span>
+                        <span :class="useStatusStyle(biometric.verified)" class="flex w-32 items-center justify-center rounded p-2 capitalize text-white">
+                           {{ useStatusContent(biometric.verified) }}</span>
                      </td>
-                     <td>
-                        <div class="static">
-                           <a type="button" class="text-lg font-bold text-neutral-400 hover:text-blue-500" data-dropdown-toggle="dropdown" data-popper-placement="bottom-end">
-                              <i class="material-icons pointer-events-none">more_horiz</i>
-                           </a>
-                           <div class="z-10 hidden w-48 rounded bg-white py-5">
-                              <a class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100">View</a>
-                              <a class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100">
-                                 Delete
-                              </a>
-                           </div>
-                        </div>
-                     </td>
+                     <td>{{ biometric.smile_response }}</td>
+                     <td>{{ biometric.created_at }}</td>
                   </tr>
                </tbody>
             </table>
@@ -56,7 +46,7 @@ import { filterTable } from "@/stores/search-filter";
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
-import { getDrivers, getUsersProfile } from "@/apis/accountApi";
+import { getBiometrics } from "@/apis/accountApi";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
 import { storeToRefs } from "pinia";
@@ -68,13 +58,13 @@ const { search } = storeToRefs(store);
 
 
 const currentRoute = routeDetails();
-currentRoute.name = "Drivers";
+currentRoute.name = "Biometric";
 const filterTableStore = filterTable();
 
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
 
-const drivers = ref([]);
+const biometric = ref([]);
 
 // check ids
 const selectedIds = ref([]);
@@ -109,7 +99,7 @@ function selectAll() {
    if (selectedIds.value.length > 0) {
       selectedIds.value.splice(0, selectedIds.value.length);
    } else {
-      selectedIds.value = drivers.value.map(item => item.id);
+      selectedIds.value = biometric.value.map(item => item.id);
    }
 
 }
@@ -117,36 +107,23 @@ function selectAll() {
 
 
 onMounted(async () => {
-   const { data : driverData } = await getDrivers();
-   //get user profile data
-   const userProfile = await getUsersProfile();
-   let { data: userProfileData } = userProfile;
-   // combine the data
-   userProfileData = userProfileData.data.map(({ id: upid, ...row }) => ({
-      upid,
-      ...row,
-   }));
-   userProfileData.forEach((x) => {
-      x.name = "" + (x.first_name ?? "") + " " + (x.last_name ?? "");
-   });
-   let driverWithProfile = driverData.data.map((driver) =>
-      Object.assign(
-         {},
-         driver,
-         userProfileData.find(
-            (userprofileData) => userprofileData.user_id == driver.user_id
-         )
-      )
-   );
-   drivers.value = driverWithProfile;
+   const biodata = await getBiometrics();
+   let { data: biometricData } = biodata;
 
-   filterTableStore.allItems = drivers.value;
+   biometricData = biometricData.data;
+   biometricData.forEach((x) => {
+      x.name = "" + (x.first_name ?? "") + " " + (x.last_name ?? "");
+      x.smile_response = x.smile_response=="{}" ? "NO" : "YES"
+   });
+   biometric.value = biometricData;
+
+   filterTableStore.allItems = biometric.value;
 });
 
 
-const driversData = computed(() => {
+const biometricData = computed(() => {
    if (search.value.length > 0) {
-      return drivers.value.filter((item) =>
+      return biometric.value.filter((item) =>
          Object.values(item).some(
             (value) =>
                typeof value === "string" &&
@@ -154,7 +131,7 @@ const driversData = computed(() => {
          )
       );
    }
-   return drivers.value;
+   return biometric.value;
 });
 
 

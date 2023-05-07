@@ -11,37 +11,29 @@
                         <input type="checkbox" @click="selectAll" />
                      </th>
                      <th>Name</th>
-                     <th>License</th>
-                     <th>Insurance</th>
-                     <th>Verified</th>
-                     <th>Actions</th>
+                     <th>Work Email</th>
+                     <th>Work Email Verified</th>
+                     <th>Bio Ver.</th>
+                     <th>Org Ver.</th>
+                     <th>Work</th>
+                     <th>Created</th>
                   </tr>
                </thead>
                <tbody>
-                  <tr v-for="driver in driversData" :key="driver.id">
+                  <tr v-for="onboarding in onboardingData" :key="onboarding.id">
                      <td>
-                        <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox(driver.id)" />
+                        <input type="checkbox" class="checkbox" :checked="isCheckedAll" @click="updateCheckbox(onboarding.id)" />
                      </td>
-                     <td>{{ driver.name }}</td>
-                     <td>{{ driver.license }}</td>
-                     <td>{{ driver.insurance }}</td>
+                     <td>{{ onboarding.name }}</td>
+                     <td>{{ onboarding.corp_email }}</td>
                      <td>
-                        <span :class="useStatusStyle(driver.verified)" class="flex w-32 items-center justify-center rounded p-2 capitalize text-white">
-                           {{ useStatusContent(driver.verified) }}</span>
+                        <span :class="useStatusStyle(onboarding.email_verified)" class="flex w-32 items-center justify-center rounded p-2 capitalize text-white">
+                           {{ useStatusContent(onboarding.email_verified) }}</span>
                      </td>
-                     <td>
-                        <div class="static">
-                           <a type="button" class="text-lg font-bold text-neutral-400 hover:text-blue-500" data-dropdown-toggle="dropdown" data-popper-placement="bottom-end">
-                              <i class="material-icons pointer-events-none">more_horiz</i>
-                           </a>
-                           <div class="z-10 hidden w-48 rounded bg-white py-5">
-                              <a class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100">View</a>
-                              <a class="block w-full cursor-pointer px-5 py-2 text-base hover:bg-blue-100">
-                                 Delete
-                              </a>
-                           </div>
-                        </div>
-                     </td>
+                     <td>{{ onboarding.biometric_verified }}</td>
+                     <td>{{ onboarding.user_corp_verified }}</td>
+                     <td>{{ onboarding.user_corp }}</td>
+                     <td>{{ onboarding.created_at }}</td>
                   </tr>
                </tbody>
             </table>
@@ -56,7 +48,7 @@ import { filterTable } from "@/stores/search-filter";
 import { ref, onMounted, computed, onUnmounted } from "vue";
 import MainLayout from "@/layouts/MainLayout.vue";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
-import { getDrivers, getUsersProfile } from "@/apis/accountApi";
+import { getPublicOnboarding } from "@/apis/accountApi";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
 import { storeToRefs } from "pinia";
@@ -68,13 +60,13 @@ const { search } = storeToRefs(store);
 
 
 const currentRoute = routeDetails();
-currentRoute.name = "Drivers";
+currentRoute.name = "Public Onboarding";
 const filterTableStore = filterTable();
 
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
 
-const drivers = ref([]);
+const onboarding = ref([]);
 
 // check ids
 const selectedIds = ref([]);
@@ -109,7 +101,7 @@ function selectAll() {
    if (selectedIds.value.length > 0) {
       selectedIds.value.splice(0, selectedIds.value.length);
    } else {
-      selectedIds.value = drivers.value.map(item => item.id);
+      selectedIds.value = onboarding.value.map(item => item.id);
    }
 
 }
@@ -117,36 +109,22 @@ function selectAll() {
 
 
 onMounted(async () => {
-   const { data : driverData } = await getDrivers();
-   //get user profile data
-   const userProfile = await getUsersProfile();
-   let { data: userProfileData } = userProfile;
-   // combine the data
-   userProfileData = userProfileData.data.map(({ id: upid, ...row }) => ({
-      upid,
-      ...row,
-   }));
-   userProfileData.forEach((x) => {
+   const responsedata = await getPublicOnboarding();
+   let { data: onboardingData } = responsedata;
+
+   onboardingData = onboardingData.data;
+   onboardingData.forEach((x) => {
       x.name = "" + (x.first_name ?? "") + " " + (x.last_name ?? "");
    });
-   let driverWithProfile = driverData.data.map((driver) =>
-      Object.assign(
-         {},
-         driver,
-         userProfileData.find(
-            (userprofileData) => userprofileData.user_id == driver.user_id
-         )
-      )
-   );
-   drivers.value = driverWithProfile;
+   onboarding.value = onboardingData;
 
-   filterTableStore.allItems = drivers.value;
+   filterTableStore.allItems = onboarding.value;
 });
 
 
-const driversData = computed(() => {
+const onboardingData = computed(() => {
    if (search.value.length > 0) {
-      return drivers.value.filter((item) =>
+      return onboarding.value.filter((item) =>
          Object.values(item).some(
             (value) =>
                typeof value === "string" &&
@@ -154,7 +132,7 @@ const driversData = computed(() => {
          )
       );
    }
-   return drivers.value;
+   return onboarding.value;
 });
 
 

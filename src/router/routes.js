@@ -23,6 +23,18 @@ const routes = [
     meta: metaData,
   },
   {
+    name: "biometric",
+    path: "/admin/biometric",
+    component: () => import("../views/admin/BiometricView.vue"),
+    meta: metaData,
+  },
+  {
+    name: "public-onboarding",
+    path: "/admin/public-onboarding",
+    component: () => import("../views/admin/PublicOnboardingView.vue"),
+    meta: metaData,
+  },
+  {
     name: "users",
     path: "/admin/users/:id",
     component: () => import("../views/admin/single-view/SingleUserView.vue"),

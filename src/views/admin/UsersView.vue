@@ -7,6 +7,7 @@ import ListItem from "@/components/ListItem.vue";
 import ConfirmModal from "@/components/common/ConfirmModal.vue";
 
 import { getUsers, getUsersProfile } from "@/apis/accountApi";
+import { exportCSV } from "../../apis/exportCSV";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
 import useRecordSort from "@/composables/useRecordSort";
@@ -81,6 +82,10 @@ function selectAll() {
 
 }
 
+function downloadTable() {
+   exportCSV("Users");
+}
+
 const currentRoute = routeDetails();
 currentRoute.name = "Users";
 const users = ref([]);
@@ -152,8 +157,8 @@ onUnmounted(() => {
                <a class="block text-sm w-full hover:bg-neutral-100 px-5 py-2.5 cursor-pointer">
                   View
                </a>
-               <a class="block text-sm w-full hover:bg-neutral-100 px-5 py-2.5 cursor-pointer">
-                  Delete
+               <a @click="downloadTable()" class="block text-sm w-full hover:bg-neutral-100 px-5 py-2.5 cursor-pointer">
+                  Download
                </a>
             </template>
 
