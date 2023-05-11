@@ -26,12 +26,8 @@
                      <td>{{ organisation.name }}</td>
                      <td>{{ organisation.domain_name }}</td>
                      <td>
-                        <span
-                           :class="useStatusStyle(organisation.status)"
-                           class="flex w-32 items-center justify-center rounded p-2 capitalize text-white"
-                        >
-                           {{ useStatusContent(organisation.status) }}</span
-                        >
+                        <span :class="useStatusStyle(organisation.status)" class="flex w-32 items-center justify-center rounded p-2 capitalize text-white">
+                           {{ useStatusContent(organisation.status) }}</span>
                      </td>
                      <td>
                         <div class="static">
@@ -80,8 +76,6 @@ let organizations = ref([]);
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
 
-
-
 // check ids
 const selectedIds = ref([]);
 
@@ -102,8 +96,10 @@ const toggleSelection = (id) => {
 
 const approveOrg = async (orgId) => {
    await approveOrgQuery(orgId)
-      .then((response) => { Message.success("Organization approved!");})
-      .catch((error) => {Message.error(error.response.data.message);});
+      .then((response) => { Message.success("Organization approved!"); })
+      .catch((error) => { Message.error(error.response.data.message); });
+
+   await fetchOrganisation()
 }
 
 function updateCheckbox(id) {
@@ -126,22 +122,24 @@ function selectAll() {
 
 }
 
-
-onMounted(async () => {
+// fetch organisation data and mappings
+const fetchOrganisation = async () => {
    const response = await getOrganizations();
    const { data } = response;
 
    var orgsData = data.data;
    orgsData = orgsData.map((x) => ({
       ...x,
-      status: x.status==true ? "verified" : "not verified",
+      status: x.status == true ? "verified" : "not verified",
    }));
    if (data) {
       organizations.value = orgsData;
    }
 
    filterTableStore.allItems = organizations.value;
-});
+}
+
+onMounted(async () => await fetchOrganisation());
 
 const orgsData = computed(() => {
    if (search.value.length > 0) {
