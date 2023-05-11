@@ -1,7 +1,29 @@
 <template>
    <main-layout>
       <div>
-         <ActionComponent :showAction="isCheckedAll" :checkBoxIsClicked="checkedCheckbox" />
+         <!-- <ActionComponent :showAction="isCheckedAll" :checkBoxIsClicked="checkedCheckbox" /> -->
+         <action-bar :showAction="isCheckedAll" :checkBoxIsClicked="checkedCheckbox" @search="(text) => search = text">
+            <template v-slot:action>
+               <a class="block text-sm w-full hover:bg-neutral-100 px-5 py-2.5 cursor-pointer">
+                  View
+               </a>
+               <a @click="downloadTable()" class="block text-sm w-full hover:bg-neutral-100 px-5 py-2.5 cursor-pointer">
+                  Download
+               </a>
+            </template>
+
+            <template v-slot:filter>
+               <div class="flex flex-col justify-between">
+                  <list-item checked="asc" v-model="filters.sort_name" @click="doFilter('name')">
+                     Name (A-Z)
+                  </list-item>
+
+                  <list-item checked="asc" v-model="filters.sort_domain" @click="doFilter('domain_name')">
+                     Domain Name (A-Z)
+                  </list-item>
+               </div>
+            </template>
+         </action-bar>
 
          <div class="mt-7 mb-8 overflow-x-auto rounded border bg-white px-0 sm:py-3 sm:px-3">
             <table class="table" id="table" width="100%">
@@ -51,18 +73,23 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, onUnmounted } from "vue";
+import { ref, onMounted, computed, onUnmounted, reactive } from "vue";
 import { routeDetails } from "@/stores/routeDetails.js";
 import { filterTable } from "@/stores/search-filter";
 
 import MainLayout from "@/layouts/MainLayout.vue";
 import ActionComponent from "@/components/reusables/ActionComponent.vue";
+import ActionBar from "@/components/common/ActionBar.vue";
 import { useStatusStyle } from "@/composables/useStatusStyle";
 import { useStatusContent } from "@/composables/useStatusContent";
 import { getOrganizations, approveOrgQuery } from "@/apis/accountApi";
 import { useSearchKeyword } from "../../stores/useSearchKeyword";
+import useRecordSort from "@/composables/useRecordSort";
 import { storeToRefs } from "pinia";
 import Message from "vue-m-message";
+import { exportCSV } from "@/apis/exportCSV";
+import ListItem from "@/components/ListItem.vue";
+
 
 // store
 const store = useSearchKeyword();
@@ -72,9 +99,32 @@ const currentRoute = routeDetails();
 currentRoute.name = "Organizations";
 const filterTableStore = filterTable();
 let organizations = ref([]);
-
 const isCheckedAll = ref(false);
 const checkedCheckbox = ref(false);
+const { sortAsc, sortDesc } = useRecordSort()
+let filters = reactive({
+   sort_name: '',
+   sort_domain: '',
+})
+
+const downloadTable = () => {
+   exportCSV(currentRoute.name);
+}
+
+// filter table record
+const doFilter = (type) => {
+   if (type == 'name') {
+      orgsData.value.sort((a, b) => {
+         return filters.sort_name == 'asc' ? sortAsc(a, b, type) : sortDesc(a, b, type)
+      })
+   }
+
+   if (type == 'domain_name') {
+      orgsData.value.sort((a, b) => {
+         return filters.sort_domain === 'asc' ? sortAsc(a, b, type) : sortDesc(a, b, type);
+      })
+   }
+}
 
 // check ids
 const selectedIds = ref([]);
